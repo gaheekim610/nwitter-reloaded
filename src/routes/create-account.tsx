@@ -28,12 +28,13 @@ export default function CreateAccount() {
     const onSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
+
         if(isLoading||name===''||email===''||password==='') return;
         try{
             setLoading(true);
             // create an account
+            // TODO: create email verification
             const credentials = await createUserWithEmailAndPassword(auth, email, password);
-            console.log(credentials.user)
             // set the name of the user
             await updateProfile(credentials.user,{
                 displayName: name,
@@ -42,7 +43,6 @@ export default function CreateAccount() {
             navigate("/")
         } catch(e){
             if (e instanceof FirebaseError){
-                console.log(e.code, e.message);
                 setError(e.message)
             }
         } finally{
@@ -52,7 +52,7 @@ export default function CreateAccount() {
 
     return ( 
         <Wrapper>
-            <Title> Join X</Title>
+            <Title> Join X </Title>
             <Form onSubmit={onSubmit}>
                 <Input onChange={onChange} name="name" placeholder="Name" type="text" required />
                 <Input onChange={onChange} name="email" placeholder="Email" type="email" required/>
@@ -62,6 +62,9 @@ export default function CreateAccount() {
             {error !== "" ? <Error>{error}</Error> : null}
             <Switcher>
                Already have an account? <Link to="/login">Log in</Link>
+            </Switcher>
+            <Switcher>
+               Forget your password?  <Link to="/reset-password">Reset your password</Link>
             </Switcher>
             <GithubButton/>
         </Wrapper>
