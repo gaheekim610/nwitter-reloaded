@@ -80,6 +80,12 @@ export default function PostTweetForm() {
 	};
 	const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { files } = e.target;
+		// Code Challenge: limitation of file size
+		const maxSize = 1 * 1024 * 1024; // 1MB
+		if (files && files[0].size > maxSize) {
+			alert("Files cannot exceed 1MB.");
+			return;
+		}
 		if (files && files.length === 1) {
 			setFile(files[0]);
 		}
@@ -96,14 +102,8 @@ export default function PostTweetForm() {
 				username: user.displayName || "Anonymous",
 				userId: user.uid,
 			});
-			if (file) {
-				const maxSize = 1 * 1024 * 1024;
-				const fileSize = file.size;
-				if (fileSize > maxSize) {
-					alert("File size should be under 1MB");
-				}
-				console.log(fileSize, "filesize");
 
+			if (file) {
 				const locationRef = ref(
 					storage,
 					`tweets/${user.uid}-${user.displayName}/${doc.id}`,
