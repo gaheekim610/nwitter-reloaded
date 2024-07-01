@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { auth } from "./firebase";
 
@@ -16,36 +16,36 @@ import LoadingScreen from "./routes/loading-screen";
 import ResetPassword from "./routes/reset-password";
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: ( 
-      <ProtectedRoute>
-        <Layout/>,
-      </ProtectedRoute>
-    ),
-    children: [
-      {
-        path: '',
-        element: <Home/>
-      },
-      {
-        path: 'profile',
-        element: <Profile/>
-      }
-    ]
-  },
-  {
-    path: '/login',
-    element: <Login/>
-  },
-  {
-    path: '/create-account',
-    element: <CreateAccount/>
-  },
-  {
-    path: '/reset-password',
-    element: <ResetPassword/>
-  }
+	{
+		path: "/",
+		element: (
+			<ProtectedRoute>
+				<Layout />,
+			</ProtectedRoute>
+		),
+		children: [
+			{
+				path: "",
+				element: <Home />,
+			},
+			{
+				path: "profile",
+				element: <Profile />,
+			},
+		],
+	},
+	{
+		path: "/login",
+		element: <Login />,
+	},
+	{
+		path: "/create-account",
+		element: <CreateAccount />,
+	},
+	{
+		path: "/reset-password",
+		element: <ResetPassword />,
+	},
 ]);
 
 const GlobalStyles = createGlobalStyle`
@@ -63,30 +63,29 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
 `;
 
-
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const init = async() => {
-    await auth.authStateReady();
-    // wait for firebase
-    setIsLoading(false);
-  }
+	const [isLoading, setIsLoading] = useState(true);
+	const init = async () => {
+		await auth.authStateReady();
+		// wait for firebase
+		setIsLoading(false);
+	};
 
-  useEffect(() => {
-    init();
-  },[])
+	useEffect(() => {
+		init();
+	}, []);
 
-  return (
-    <Wrapper>
-      <GlobalStyles/>
-      { isLoading ? <LoadingScreen/> : <RouterProvider router = {router}/> }
-    </Wrapper>
-  )
+	return (
+		<Wrapper>
+			<GlobalStyles />
+			{isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
+		</Wrapper>
+	);
 }
 
-export default App
+export default App;
