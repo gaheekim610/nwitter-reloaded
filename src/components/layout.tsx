@@ -5,7 +5,7 @@ import { auth } from "../firebase";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-	display: gird;
+	display: grid;
 	gap: 20px;
 	height: 100%;
 	grid-template-columns: 1fr 4fr;
@@ -22,24 +22,24 @@ const Menu = styled.div`
 `;
 
 const MenuItem = styled.div`
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid white;
-    heightL 50px;
-    width: 50px;
-    border-radius: 50px;
-    svg {
-        width: 30px;
-        fill: white;
-    }
-    &.log-out {
-    border-color: tomato;
-    svg {
-    fill: tomato;
-    }
-    }
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid white;
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	svg {
+		width: 30px;
+		fill: white;
+	}
+	&.log-out {
+		border-color: tomato;
+		svg {
+			fill: tomato;
+		}
+	}
 `;
 
 export default function Layout() {
@@ -48,7 +48,7 @@ export default function Layout() {
 	const onLogout = async () => {
 		const ok = confirm("Are you sure you want to log out?");
 		if (ok) {
-			auth.signOut();
+			await auth.signOut();
 			navigate("/login");
 		}
 	};
