@@ -1,4 +1,9 @@
+import { auth, db, storage } from "../firebase";
+import { deleteDoc, doc } from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
+
 import styled from "styled-components";
+
 import { ITweet } from "./timeline";
 
 const Wrapper = styled.div`
@@ -27,12 +32,45 @@ const Photo = styled.img`
 	border-radius: 15px;
 `;
 
-export default function Tweet({ username, photo, tweet }: ITweet) {
+const DeleteButton = styled.button`
+	background-color: tomato;
+	color: white;
+	font-weight: 600;
+	border: 0;
+	font-size: 12px;
+	padding: 5px 10px;
+	text-transform: uppercase;
+	border-radius: 5px;
+	cursor: pointer;
+`;
+
+export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
+	const user = auth.currentUser;
+	// TODO: Code Challenge - edit button
+	const onDelete = async () => {
+		const ok = confirm("Are you sure you want to delete this post?");
+		if (!ok || user?.uid !== userId) return;
+		try {
+			await deleteDoc(doc(db, "tweets", id));
+			if (photo) {
+				const photoRef = ref(storage, `tweets/${user.uid}/${id}`);
+				console.log("d", photoRef);
+
+				await deleteObject(photoRef);
+			}
+		} catch (e) {
+			console.log(e);
+		} finally {
+		}
+	};
 	return (
 		<Wrapper>
 			<Column>
 				<Username>{username}</Username>
 				<Payload>{tweet}</Payload>
+				{user?.uid === userId ? (
+					<DeleteButton onClick={onDelete}>Delete</DeleteButton>
+				) : null}
 			</Column>
 			{photo ? (
 				<Column>
